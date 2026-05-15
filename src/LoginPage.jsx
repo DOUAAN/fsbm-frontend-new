@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Login({ onLogin }) {
+export default function LoginPage({ onLogin }) {
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [erreur, setErreur] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     setLoading(true);
@@ -17,8 +19,8 @@ export default function Login({ onLogin }) {
       });
       const { token, utilisateur } = res.data;
       localStorage.setItem("token", token);
-      localStorage.setItem("utilisateur", JSON.stringify(utilisateur));
       onLogin(utilisateur);
+      navigate("/dashboard");
     } catch (err) {
       setErreur("Email ou mot de passe incorrect !");
     }
@@ -43,42 +45,34 @@ export default function Login({ onLogin }) {
           Connectez-vous à votre espace
         </p>
 
-        {/* Erreur */}
         {erreur && (
           <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg mb-6">
             {erreur}
           </div>
         )}
 
-        {/* Email */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input
             type="email"
             placeholder="exemple@fsbm.ma"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg text-sm outline-none focus:border-[#6600FF] focus:ring-1 focus:ring-[#6600FF]"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg text-sm outline-none focus:border-[#6600FF]"
           />
         </div>
 
-        {/* Mot de passe */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Mot de passe
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
           <input
             type="password"
             placeholder="••••••••"
             value={motDePasse}
             onChange={e => setMotDePasse(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg text-sm outline-none focus:border-[#6600FF] focus:ring-1 focus:ring-[#6600FF]"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg text-sm outline-none focus:border-[#6600FF]"
           />
         </div>
 
-        {/* Bouton Login */}
         <button
           onClick={handleLogin}
           disabled={loading}
@@ -86,6 +80,12 @@ export default function Login({ onLogin }) {
         >
           {loading ? "Connexion..." : "Se connecter"}
         </button>
+
+        <div className="mt-4 text-center">
+          <a href="/" className="text-sm text-[#6600FF] hover:underline">
+            ← Retour à l'accueil
+          </a>
+        </div>
 
       </div>
     </div>

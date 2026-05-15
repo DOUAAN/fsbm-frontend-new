@@ -1,8 +1,10 @@
 import { useState } from "react";
+import EventsManagement from "./EventsManagement";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   BarChart, Bar, PieChart, Pie, Cell
 } from "recharts";
+import ClubsManagement from "./ClubsManagement";
 
 const enrollmentData = [
   { week: "W1", members: 1200 },
@@ -73,12 +75,11 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
   const initiales = utilisateur.nom.charAt(0) + utilisateur.prenom.charAt(0);
 
   return (
-    <div className="flex h-screen bg-[#f6f1fc] overflow-hidden">
+    <div className="flex h-screen bg-[#f6f1fc] overflow-hidden relative">
 
       {/* Sidebar */}
       <div className="w-64 bg-white flex flex-col justify-between py-6 px-4 border-r">
         <div>
-          {/* Logo */}
           <div className="flex items-center gap-2 mb-8 px-2">
             <img src="/Logo-FSBM.PNG" alt="Club FSBM" className="h-10" />
             <span className="font-bold text-lg">
@@ -87,7 +88,6 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
             </span>
           </div>
 
-          {/* Main Menu */}
           <p className="text-xs text-gray-400 font-semibold mb-3 px-2 uppercase tracking-wider">Main Menu</p>
           <ul className="space-y-1 mb-6">
             {[
@@ -128,7 +128,6 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
             ))}
           </ul>
 
-          {/* System */}
           <p className="text-xs text-gray-400 font-semibold mb-3 px-2 uppercase tracking-wider">System</p>
           <ul className="space-y-1">
             {[
@@ -168,7 +167,6 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
           </ul>
         </div>
 
-        {/* User Bottom */}
         <div className="border-t pt-4">
           <div className="flex items-center gap-3 px-2 mb-2">
             <div className="w-10 h-10 bg-[#6600FF] rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -196,7 +194,14 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
 
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-4 bg-white border-b">
-          <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
+          <h1 className="text-xl font-bold text-gray-800">
+            {activePage === "dashboard" && "Dashboard"}
+            {activePage === "clubs" && "Clubs Management"}
+            {activePage === "events" && "Events Management"}
+            {activePage === "members" && "Members Management"}
+            {activePage === "notifications" && "Notifications"}
+            {activePage === "settings" && "Settings"}
+          </h1>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-gray-400">
@@ -209,7 +214,6 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
               />
             </div>
 
-            {/* Notification */}
             <div className="relative cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-600">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
@@ -217,7 +221,6 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">4</span>
             </div>
 
-            {/* User Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setShowMenu(!showMenu)}
@@ -274,114 +277,139 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
           </div>
         </div>
 
-        {/* Dashboard Content */}
-        <div className="flex-1 overflow-y-auto p-8">
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-8 relative">
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 gap-6 mb-8">
-            {stats.map((stat, i) => (
-              <div key={i} className={`bg-white rounded-2xl p-6 flex items-center gap-4 ${stat.border || ""}`}>
-                <div className={`w-14 h-14 ${stat.bg} rounded-xl flex items-center justify-center`}>
-                  {stat.icon}
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{stat.label}</p>
-                  <p className={`text-4xl font-bold ${stat.valueColor || "text-gray-800"}`}>{stat.value}</p>
-                  <p className={`text-sm ${stat.subColor}`}>{stat.sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Clubs Management Page */}
+          {activePage === "clubs" && <ClubsManagement />}
 
-          {/* Charts Row 1 */}
-          <div className="grid grid-cols-3 gap-6 mb-8">
-            <div className="col-span-2 bg-white rounded-2xl p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="font-bold text-gray-800">Member Enrollment Trend</h2>
-                <span className="text-xs bg-gray-100 px-3 py-1 rounded-full text-gray-500">Last 8 weeks</span>
-              </div>
-              <ResponsiveContainer width="100%" height={200}>
-                <LineChart data={enrollmentData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="week" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="members" stroke="#6600FF" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="bg-white rounded-2xl p-6">
-              <h2 className="font-bold text-gray-800 mb-4">Clubs by Category</h2>
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie data={categoryData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value">
-                    {categoryData.map((entry, index) => (
-                      <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Charts Row 2 */}
-          <div className="grid grid-cols-3 gap-6 mb-8">
-            <div className="col-span-2 bg-white rounded-2xl p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="font-bold text-gray-800">Top Clubs by Membership</h2>
-                <button className="text-[#6600FF] text-sm hover:underline">View all clubs →</button>
-              </div>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={topClubs}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="nom" tick={{ fontSize: 10 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Bar dataKey="membres" fill="#6600FF" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Recent Activity */}
-            <div className="bg-white rounded-2xl p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="font-bold text-gray-800">Recent Activity</h2>
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-              </div>
-              <div className="space-y-3 overflow-y-auto max-h-48">
-                {recentActivity.map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className={`w-8 h-8 ${item.color} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}>
-                      {item.titre.charAt(0)}
+          {/* Dashboard Page */}
+          {activePage === "dashboard" && (
+            <>
+              {/* Stats Cards */}
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                {stats.map((stat, i) => (
+                  <div key={i} className={`bg-white rounded-2xl p-6 flex items-center gap-4 ${stat.border || ""}`}>
+                    <div className={`w-14 h-14 ${stat.bg} rounded-xl flex items-center justify-center`}>
+                      {stat.icon}
                     </div>
-                    <div className="flex-1">
-                      <div className="text-sm font-medium text-gray-700">{item.titre}</div>
-                      <div className="text-xs text-gray-400">{item.desc}</div>
+                    <div>
+                      <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{stat.label}</p>
+                      <p className={`text-4xl font-bold ${stat.valueColor || "text-gray-800"}`}>{stat.value}</p>
+                      <p className={`text-sm ${stat.subColor}`}>{stat.sub}</p>
                     </div>
-                    <div className="text-xs text-gray-400 flex-shrink-0">{item.time}</div>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
 
-          {/* Quick Actions */}
-          <div className="bg-white rounded-2xl p-6">
-            <h2 className="font-bold text-gray-800 mb-4">Quick Actions</h2>
-            <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
-                + Add New Club
-              </button>
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
-                Schedule Event
-              </button>
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
-                Add Member
-              </button>
+              {/* Charts Row 1 */}
+              <div className="grid grid-cols-3 gap-6 mb-8">
+                <div className="col-span-2 bg-white rounded-2xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="font-bold text-gray-800">Member Enrollment Trend</h2>
+                    <span className="text-xs bg-gray-100 px-3 py-1 rounded-full text-gray-500">Last 8 weeks</span>
+                  </div>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart data={enrollmentData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis dataKey="week" tick={{ fontSize: 12 }} />
+                      <YAxis tick={{ fontSize: 12 }} />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="members" stroke="#6600FF" strokeWidth={2} dot={false} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="bg-white rounded-2xl p-6">
+                  <h2 className="font-bold text-gray-800 mb-4">Clubs by Category</h2>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie data={categoryData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value">
+                        {categoryData.map((entry, index) => (
+                          <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Charts Row 2 */}
+              <div className="grid grid-cols-3 gap-6 mb-8">
+                <div className="col-span-2 bg-white rounded-2xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="font-bold text-gray-800">Top Clubs by Membership</h2>
+                    <button
+                      onClick={() => setActivePage("clubs")}
+                      className="text-[#6600FF] text-sm hover:underline"
+                    >
+                      View all clubs →
+                    </button>
+                  </div>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <BarChart data={topClubs}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis dataKey="nom" tick={{ fontSize: 10 }} />
+                      <YAxis tick={{ fontSize: 12 }} />
+                      <Tooltip />
+                      <Bar dataKey="membres" fill="#6600FF" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="bg-white rounded-2xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="font-bold text-gray-800">Recent Activity</h2>
+                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  </div>
+                  <div className="space-y-3 overflow-y-auto max-h-48">
+                    {recentActivity.map((item, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className={`w-8 h-8 ${item.color} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}>
+                          {item.titre.charAt(0)}
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-gray-700">{item.titre}</div>
+                          <div className="text-xs text-gray-400">{item.desc}</div>
+                        </div>
+                        <div className="text-xs text-gray-400 flex-shrink-0">{item.time}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
               
+            </>
+          )}
+
+          {/* Events Page */}
+          {activePage === "events" && <EventsManagement />}
+
+          {/* Members Page */}
+          {activePage === "members" && (
+            <div className="bg-white rounded-2xl p-8 text-center text-gray-400">
+              <p className="text-lg font-medium">Members Management</p>
+              <p className="text-sm mt-2">Coming soon...</p>
             </div>
-          </div>
+          )}
+
+          {/* Notifications Page */}
+          {activePage === "notifications" && (
+            <div className="bg-white rounded-2xl p-8 text-center text-gray-400">
+              <p className="text-lg font-medium">Notifications</p>
+              <p className="text-sm mt-2">Coming soon...</p>
+            </div>
+          )}
+
+          {/* Settings Page */}
+          {activePage === "settings" && (
+            <div className="bg-white rounded-2xl p-8 text-center text-gray-400">
+              <p className="text-lg font-medium">Settings</p>
+              <p className="text-sm mt-2">Coming soon...</p>
+            </div>
+          )}
 
         </div>
       </div>
