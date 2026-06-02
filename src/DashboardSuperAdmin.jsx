@@ -666,7 +666,7 @@ export default function DashboardSuperAdmin({ utilisateur, onLogout }) {
     setTimeout(() => setActMsg({ text: "", type: "" }), 3000);
   };
   const supprimerActualite = async (id) => { if (!window.confirm("Supprimer ?")) return; try { await axios.delete(`${API}/actualites/${id}`, { headers }); fetchActualites(); } catch { alert("Erreur."); } };
-  const editActualite = (act) => { setActForm({ titre: act.titre || "", contenu: act.contenu || "", date: act.date || "", categorie: act.categorie || "", club_id: act.club_id || "", instagram: act.instagram || "" }); setActEditId(act.id); setActImagePreview(act.image ? `${STORAGE}/${act.image}` : null); setModalActualite("edit"); };
+  const editActualite = (act) => { setActForm({ titre: act.titre || "", contenu: act.contenu || "", date: act.date || "", categorie: act.categorie || "", club_id: act.club_id || "", instagram: act.instagram || "" }); setActEditId(act.id);setActImagePreview(act.image ? (act.image.startsWith('http') ? act.image : `${STORAGE}/${act.image}`) : null); setModalActualite("edit"); };
 
   const saveCompte = async () => {
     try {
@@ -986,13 +986,13 @@ export default function DashboardSuperAdmin({ utilisateur, onLogout }) {
                 {actualites.length === 0 ? <Card style={{ textAlign: "center", padding: 60, color: "#94a3b8" }}>Aucune actualité</Card>
                   : actualites.map(act => (
                     <Card key={act.id} style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 14, flex: 1, minWidth: 0 }}>
-                        {act.image && <img src={`${STORAGE}/${act.image}`} alt={act.titre} style={{ width: 64, height: 48, objectFit: "cover", borderRadius: 8, flexShrink: 0 }} onError={e => e.target.style.display = "none"} />}
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", marginBottom: 2 }}>{act.titre}</div>
-                          <div style={{ fontSize: 12, color: "#94a3b8" }}>{act.date}{act.categorie && ` · ${act.categorie}`}</div>
-                        </div>
-                      </div>
+                     <div style={{ display: "flex", alignItems: "center", gap: 14, flex: 1, minWidth: 0 }}>
+                   {act.image && <img src={act.image.startsWith('http') ? act.image : `${STORAGE}/${act.image}`} alt={act.titre} style={{ width: 64, height: 48, objectFit: "cover", borderRadius: 8, flexShrink: 0 }} onError={e => e.target.style.display = "none"} />}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", marginBottom: 2 }}>{act.titre}</div>
+                     <div style={{ fontSize: 12, color: "#94a3b8" }}>{act.date}{act.categorie && ` · ${act.categorie}`}</div>
+                     </div>
+                     </div>
                       <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
                         <Btn onClick={() => editActualite(act)} variant="ghost" style={{ fontSize: 12, padding: "7px 14px" }}>✏️ Modifier</Btn>
                         <Btn onClick={() => supprimerActualite(act.id)} variant="danger" style={{ fontSize: 12, padding: "7px 12px" }}>🗑</Btn>
