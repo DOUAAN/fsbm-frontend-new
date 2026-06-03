@@ -167,7 +167,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 72 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <img src={logo} alt="Logo FSBM" style={{ height: 54, objectFit: "contain" }} />
-            <div style={{ borderLeft: "2px solid #e2e8f0", paddingLeft: 14 }}>
+            <div className="navbar-subtitle" style={{ borderLeft: "2px solid #e2e8f0", paddingLeft: 14 }}>
               <div style={{ fontSize: 15, fontWeight: 800, color: "#0d2d5e", lineHeight: 1.2 }}>Portail Clubs</div>
               <div style={{ fontSize: 12, color: "#64748b", fontWeight: 500 }}>Faculté des Sciences Ben M'Sik</div>
             </div>
@@ -257,7 +257,7 @@ export default function HomePage() {
           </div>
         ) : (
           <>
-            <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 64px", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", minHeight: 520, gap: 64, position: "relative", zIndex: 2 }}>
+            <div className="hero-grid" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 64px", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", minHeight: 520, gap: 64, position: "relative", zIndex: 2 }}>
               {/* Text side */}
               <div style={{ padding: "60px 0", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(12px)", transition: "all 0.35s ease" }}>
                 {slide?.categorie && (
@@ -285,7 +285,7 @@ export default function HomePage() {
                 </div>
               </div>
               {/* Image side */}
-              <div style={{ opacity: fade ? 1 : 0, transform: fade ? "scale(1)" : "scale(0.97)", transition: "all 0.35s ease", padding: "48px 0" }}>
+              <div className="hero-image" style={{ opacity: fade ? 1 : 0, transform: fade ? "scale(1)" : "scale(0.97)", transition: "all 0.35s ease", padding: "48px 0" }}>
                 <div style={{ position: "relative" }}>
                   <div style={{ position: "absolute", inset: -8, borderRadius: 20, background: "linear-gradient(135deg, rgba(13,45,94,0.1), rgba(224,123,32,0.08))", zIndex: 0 }} />
                   <div style={{ borderRadius: 16, overflow: "hidden", height: 340, position: "relative", zIndex: 1, background: "#dde8f7" }}>
@@ -559,17 +559,26 @@ export default function HomePage() {
       </footer>
 
       <style>{`
-        @keyframes ddFade { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-        @media (max-width: 900px) {
-          nav { display: none !important; }
-          .hamburger-btn { display: flex !important; }
-        }
-        * { box-sizing: border-box; }
-        body { margin: 0; }
-      `}</style>
-    </div>
-  );
+  @keyframes ddFade { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+  @media (max-width: 900px) {
+    nav { display: none !important; }
+    .hamburger-btn { display: flex !important; }
+  }
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr !important; padding: 0 20px !important; gap: 24px !important; }
+    .hero-image { display: none !important; }
+    .navbar-subtitle { display: none !important; }
+    .connexion-btn { padding: 8px 14px !important; font-size: 12px !important; }
+    .chiffres-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .doyen-flex { flex-direction: column !important; gap: 24px !important; padding: 28px 20px !important; }
+    .org-row { flex-direction: column !important; align-items: center !important; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+`}</style>
+  </div>
+ );
 }
 
 function Connector() {
@@ -605,4 +614,8 @@ function OrgCard({ person, badge, badgeColor, niveau }) {
       <div style={{ fontSize: 12, color: isTop ? "rgba(255,255,255,0.55)" : "#64748b", lineHeight: 1.5, fontStyle: "italic" }}>{person?.role}</div>
     </div>
   );
+  
 }
+
+
+
