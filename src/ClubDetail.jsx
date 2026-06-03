@@ -172,7 +172,7 @@ export default function ClubDetail() {
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "72px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", cursor: "pointer" }} onClick={() => navigate("/")}>
             <img src={logo} alt="Logo" style={{ width: "150px", height: "60px", objectFit: "contain" }} />
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: "1.2" }}>
+            <div className="club-navbar-text" style={{ display: "flex", flexDirection: "column", lineHeight: "1.2" }}>
               <span style={{ fontSize: "16px", fontWeight: "800", color: "#2a5ba5" }}>Découvrez les clubs</span>
               <span style={{ fontSize: "13px", fontWeight: "600", color: "#9fc0f1" }}>de la Faculté des Sciences Ben M'Sik</span>
             </div>
@@ -237,7 +237,7 @@ export default function ClubDetail() {
       <div style={{ position: "relative", minHeight: 420, overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: clubLogo ? `url(${clubLogo}) center/cover no-repeat` : `linear-gradient(${couleur.grad})`, filter: "blur(2px) brightness(0.25)", transform: "scale(1.05)" }}></div>
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(160deg, rgba(10,22,40,0.85) 0%, rgba(13,45,94,0.75) 60%, rgba(26,74,138,0.6) 100%)` }}></div>
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: "52px 8% 48px", display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center" }}>
+        <div className="club-hero-grid" style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: "52px 8% 48px", display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
               <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, cursor: "pointer" }} onClick={() => navigate("/")}>Accueil</span>
@@ -293,7 +293,7 @@ export default function ClubDetail() {
               </button>
             </div>
           </div>
-          <div style={{ flexShrink: 0 }}>
+          <div className="club-hero-logo" style={{ flexShrink: 0 }}>
             <div style={{ width: 200, height: 200, borderRadius: 24, background: "rgba(255,255,255,0.1)", border: "2px solid rgba(255,255,255,0.2)", backdropFilter: "blur(10px)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
               {clubLogo
                 ? <img src={clubLogo} alt={club.nom} style={{ width: 160, height: 160, objectFit: "contain", borderRadius: 16 }} />
@@ -311,8 +311,8 @@ export default function ClubDetail() {
       </div>
 
       {/* TABS */}
-      <div style={{ backgroundColor: "#ffffff", borderBottom: "2px solid #f0f4f8", position: "sticky", top: 72, zIndex: 99, boxShadow: "0 2px 8px rgba(13,45,94,0.06)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 8%", display: "flex", gap: 4 }}>
+      <div style={{ backgroundColor: "#ffffff", borderBottom: "2px solid #f0f4f8", position: "sticky", top: 72, zIndex: 99, boxShadow: "0 2px 8px rgba(13,45,94,0.06)", overflowX: "auto" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 8%", display: "flex", gap: 4, minWidth: "max-content" }}>
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               style={{ padding: "16px 22px", border: "none", borderBottom: activeTab === tab.id ? `3px solid ${couleur.dark}` : "3px solid transparent", backgroundColor: "transparent", color: activeTab === tab.id ? couleur.dark : "#64748b", fontWeight: activeTab === tab.id ? 700 : 500, fontSize: "14px", cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s" }}>
@@ -327,7 +327,7 @@ export default function ClubDetail() {
 
         {/* À PROPOS */}
         {activeTab === "apropos" && (
-          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 0.6fr", gap: 28 }}>
+          <div className="club-apropos-grid" style={{ display: "grid", gridTemplateColumns: "1.4fr 0.6fr", gap: 28 }}>
             <div style={{ background: "white", borderRadius: 20, padding: 36, border: "1px solid #f0f4f8", boxShadow: "0 4px 20px rgba(13,45,94,0.06)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
                 <div style={{ width: 5, height: 36, background: `linear-gradient(${couleur.grad})`, borderRadius: 3 }}></div>
@@ -456,7 +456,7 @@ export default function ClubDetail() {
 
         {/* CONTACT */}
         {activeTab === "contact" && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+          <div className="club-contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
             <div style={{ background: "white", borderRadius: 20, padding: 32, border: "1px solid #f0f4f8", boxShadow: "0 4px 20px rgba(13,45,94,0.06)" }}>
               <h3 style={{ margin: "0 0 24px 0", fontSize: 20, fontWeight: 900, color: "#0d2d5e" }}>Informations de contact</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -584,7 +584,6 @@ export default function ClubDetail() {
               </div>
             ) : (
               <form onSubmit={handleJoindre}>
-                {/* Nom + Prénom */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
                   {[{ label: "Nom *", key: "nom", ph: "Votre nom" }, { label: "Prénom *", key: "prenom", ph: "Votre prénom" }].map(f => (
                     <div key={f.key}>
@@ -594,15 +593,11 @@ export default function ClubDetail() {
                     </div>
                   ))}
                 </div>
-
-                {/* Email */}
                 <div style={{ marginBottom: 14 }}>
                   <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#94a3b8", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Email *</label>
                   <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} placeholder="votre@email.com"
                     style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0", borderRadius: 10, fontSize: 14, outline: "none", boxSizing: "border-box", background: "#fafafa" }} />
                 </div>
-
-                {/* Téléphone + Filière + Code Apogée */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
                   {[
                     { label: "Téléphone", key: "telephone", ph: "06XXXXXXXX" },
@@ -616,8 +611,6 @@ export default function ClubDetail() {
                     </div>
                   ))}
                 </div>
-
-                {/* Photo carte étudiant */}
                 <div style={{ marginBottom: 14 }}>
                   <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#94a3b8", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                     Photo carte étudiant
@@ -653,14 +646,11 @@ export default function ClubDetail() {
                       }} />
                   </div>
                 </div>
-
-                {/* Message */}
                 <div style={{ marginBottom: 20 }}>
                   <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#94a3b8", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Message</label>
                   <textarea value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} placeholder="Pourquoi voulez-vous rejoindre ce club ?" rows={3}
                     style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0", borderRadius: 10, fontSize: 14, outline: "none", resize: "vertical", fontFamily: "inherit", boxSizing: "border-box", background: "#fafafa" }} />
                 </div>
-
                 {formStatus === "error" && <p style={{ color: "#dc2626", fontSize: 13, margin: "-8px 0 12px" }}>Une erreur est survenue. Réessayez.</p>}
                 <button type="submit" disabled={formStatus === "loading"}
                   style={{ width: "100%", padding: 13, background: `linear-gradient(${couleur.grad})`, color: "white", border: "none", borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: "pointer", opacity: formStatus === "loading" ? 0.7 : 1 }}>
@@ -675,14 +665,22 @@ export default function ClubDetail() {
       <style>{`
         @keyframes dropFade { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 900px) {
+          nav { display: none !important; }
+          .hamburger-btn { display: flex !important; }
+          .club-navbar-text { display: none !important; }
+        }
         @media (max-width: 768px) {
           nav { display: none !important; }
           .hamburger-btn { display: flex !important; }
-          div[style*="grid-template-columns: 1.4fr"] { grid-template-columns: 1fr !important; }
-          div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
-          div[style*="grid-template-columns: 1fr auto"] { grid-template-columns: 1fr !important; }
+          .club-navbar-text { display: none !important; }
+          .club-hero-grid { grid-template-columns: 1fr !important; padding: 32px 20px !important; }
+          .club-hero-logo { display: none !important; }
+          .club-apropos-grid { grid-template-columns: 1fr !important; }
+          .club-contact-grid { grid-template-columns: 1fr !important; }
         }
-        * { box-sizing: border-box; } body { margin: 0; }
+        * { box-sizing: border-box; }
+        body { margin: 0; }
       `}</style>
     </div>
   );
