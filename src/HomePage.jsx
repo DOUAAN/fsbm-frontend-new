@@ -536,7 +536,7 @@ export default function HomePage() {
   {/* Knowledge / credits strip — compact single line */}
   <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "20px 0", fontSize: 12.5, color: "#64748b", lineHeight: 1.8 }}>
     <span style={{ color: "#e07b20", fontWeight: 700 }}>Réaliser par</span>{" "}
-    M.Douaa Naggour et M.Hania M'lissa, étudiantes en 3ème année Dev. Info
+    Douaa Naggour et Hania M'lissa, étudiantes en 3ème année Dev. Info
     <span style={{ margin: "0 10px", color: "#334155" }}>—</span>
     <span style={{ color: "#e07b20", fontWeight: 700 }}>Sous direction de </span>{" "}
     Pr. Hafsa Ouchra et Pr. Mohamed Ait Daoud et Mr. Said Chaibi
